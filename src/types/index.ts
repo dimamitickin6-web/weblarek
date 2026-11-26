@@ -36,7 +36,6 @@ export interface IProductListResponse {
 }
 
 // Данные заказа, отправляемые на сервер (POST /order/)
-// Используем уже созданный интерфейс IBuyer, чтобы не дублировать поля
 export interface IOrderRequest extends IBuyer {
     total: number;
     items: string[];
@@ -46,4 +45,9 @@ export interface IOrderRequest extends IBuyer {
 export interface IOrderResponse {
     id: string;
     total: number;
+}
+
+// Интерфейс для передачи обработчиков кликов в компоненты View
+export interface ICardActions {
+    onClick: (event: MouseEvent) => void;
 }

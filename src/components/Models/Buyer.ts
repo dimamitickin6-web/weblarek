@@ -1,4 +1,5 @@
 import { IBuyer, TBuyerErrors, TPayment } from '../../types';
+import { IEvents } from '../base/Events';
 
 export class Buyer {
     protected payment: TPayment = '';
@@ -6,7 +7,8 @@ export class Buyer {
     protected phone: string = '';
     protected address: string = '';
 
-    // Сохранение данных в модели (позволяет обновить как одно поле, так и несколько, не затирая остальные)
+    constructor(protected events: IEvents) {}
+
     setData(data: Partial<IBuyer>): void {
         if (data.payment !== undefined) {
             this.payment = data.payment;
@@ -20,9 +22,9 @@ export class Buyer {
         if (data.address !== undefined) {
             this.address = data.address;
         }
+        this.events.emit('buyer:changed');
     }
 
-    // Получение всех данных покупателя
     getData(): IBuyer {
         return {
             payment: this.payment,
@@ -32,15 +34,14 @@ export class Buyer {
         };
     }
 
-    // Очистка данных покупателя
     clear(): void {
         this.payment = '';
         this.email = '';
         this.phone = '';
         this.address = '';
+        this.events.emit('buyer:changed');
     }
 
-    // Валидация данных покупателя
     validate(): TBuyerErrors {
         const errors: TBuyerErrors = {};
 
