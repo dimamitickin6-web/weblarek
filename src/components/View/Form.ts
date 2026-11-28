@@ -19,9 +19,11 @@ export abstract class Form<T> extends Component<IFormState & T> {
 
         this.container.addEventListener('input', (event: Event) => {
             const target = event.target as HTMLInputElement;
-            const field = target.name as keyof T;
-            const value = target.value;
-            this.onInputChange(field, value);
+            if (target && target.name) {
+                const field = target.name as keyof T;
+                const value = target.value;
+                this.onInputChange(field, value);
+            }
         });
 
         this.container.addEventListener('submit', (event: Event) => {
@@ -43,12 +45,5 @@ export abstract class Form<T> extends Component<IFormState & T> {
 
     set errors(value: string) {
         this.errorsElement.textContent = value;
-    }
-
-    render(state: Partial<IFormState & T> = {}): HTMLElement {
-        const { valid, errors, ...inputs } = state;
-        super.render({ valid, errors } as Partial<IFormState & T>);
-        Object.assign(this, inputs);
-        return this.container;
     }
 }

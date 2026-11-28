@@ -1,5 +1,6 @@
 import { ICardActions } from '../../types';
 import { ensureElement } from '../../utils/utils';
+import { IEvents } from '../base/Events';
 import { CardCatalog, ICardCatalog } from './CardCatalog';
 
 export interface ICardPreview extends ICardCatalog {
@@ -12,15 +13,15 @@ export class CardPreview extends CardCatalog {
     protected descriptionElement: HTMLElement;
     protected buttonElement: HTMLButtonElement;
 
-    constructor(container: HTMLElement, actions?: ICardActions) {
-        super(container);
+    constructor(container: HTMLElement, protected events: IEvents, actions?: ICardActions) {
+        super(container, actions);
 
         this.descriptionElement = ensureElement<HTMLElement>('.card__text', this.container);
         this.buttonElement = ensureElement<HTMLButtonElement>('.card__button', this.container);
 
-        if (actions?.onClick) {
-            this.buttonElement.addEventListener('click', actions.onClick);
-        }
+        this.buttonElement.addEventListener('click', () => {
+            this.events.emit('card:action');
+        });
     }
 
     set description(value: string) {
@@ -33,9 +34,5 @@ export class CardPreview extends CardCatalog {
 
     set buttonDisabled(value: boolean) {
         this.buttonElement.disabled = value;
-    }
-
-    render(data?: Partial<ICardPreview>): HTMLElement {
-        return super.render(data);
     }
 }

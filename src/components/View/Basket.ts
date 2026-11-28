@@ -1,4 +1,4 @@
-import { createElement, ensureElement } from '../../utils/utils';
+import { ensureElement } from '../../utils/utils';
 import { Component } from '../base/Component';
 import { IEvents } from '../base/Events';
 
@@ -23,18 +23,13 @@ export class Basket extends Component<IBasketView> {
         this.buttonElement.addEventListener('click', () => {
             this.events.emit('order:open');
         });
-
-        this.items = [];
     }
 
     set items(items: HTMLElement[]) {
         if (items.length > 0) {
             this.listElement.replaceChildren(...items);
         } else {
-            const emptyParagraph = createElement<HTMLParagraphElement>('p', {
-                textContent: 'Корзина пуста',
-            });
-            this.listElement.replaceChildren(emptyParagraph);
+            this.listElement.replaceChildren();
         }
     }
 

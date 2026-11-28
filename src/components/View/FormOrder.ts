@@ -1,12 +1,9 @@
-import { TPayment } from '../../types';
+import { IBuyer } from '../../types';
 import { ensureElement } from '../../utils/utils';
 import { IEvents } from '../base/Events';
 import { Form } from './Form';
 
-export interface IFormOrder {
-    payment: TPayment;
-    address: string;
-}
+export interface IFormOrder extends Pick<IBuyer, 'payment' | 'address'> {}
 
 export class FormOrder extends Form<IFormOrder> {
     protected cardButton: HTMLButtonElement;
@@ -29,7 +26,7 @@ export class FormOrder extends Form<IFormOrder> {
         });
     }
 
-    set payment(value: TPayment) {
+    set payment(value: string) {
         this.cardButton.classList.toggle('button_alt-active', value === 'card');
         this.cashButton.classList.toggle('button_alt-active', value === 'cash');
     }

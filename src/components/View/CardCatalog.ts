@@ -33,9 +33,12 @@ export class CardCatalog extends Card<ICardCatalog> {
         Object.values(categoryMap).forEach((className) => {
             this.categoryElement.classList.remove(className);
         });
-        const modifier = categoryMap[value as keyof typeof categoryMap];
-        if (modifier) {
-            this.categoryElement.classList.add(modifier);
+
+        if (Object.prototype.hasOwnProperty.call(categoryMap, value)) {
+            const modifier = categoryMap[value as keyof typeof categoryMap];
+            if (modifier) {
+                this.categoryElement.classList.add(modifier);
+            }
         }
     }
 }
